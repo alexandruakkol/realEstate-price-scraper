@@ -1,6 +1,5 @@
 from scraper import scrape
 from flask import Flask
-import json
 
 app = Flask(__name__)
 all_data = scrape()
