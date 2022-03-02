@@ -1,10 +1,13 @@
 from bs4 import BeautifulSoup
 from urllib.request import Request, urlopen
-import json
 
 def scrape():
     # var init
-    prices = []
+    obj = {}
+    studioSale = []
+    studioRent = []
+    apartmentSale = []
+    apartmentRent = []
 
     # set up scraper
     url = 'https://compariimobiliare.ro/pret-imobil'
@@ -20,30 +23,39 @@ def scrape():
         span_area = li.find_all('span',{"class":"area-name"})
         span_price = li.find_all('span',{"class":"area-price"})
         if span_area:
-            rooms = 0
+            type_ = None
             area = span_area[0].text
             price = span_price[0].text
             href = a[0]['href']
+
             if 'garsoniere-de-vanzare' in href:
-                rooms = 1
-                scope = 'sale'
+                type_ = 'studioSale'
             if 'apartamente-de-vanzare' in href:
-                rooms = 2
-                scope = 'sale'
+                type_ = 'apartmentSale'
             if 'garsoniere-de-inchiriat' in href:
-                rooms = 1
-                scope = 'rent'
+                type_ = 'studioRent'
             if 'apartamente-de-inchiriat' in href:
-                rooms = 2
-                scope = 'rent'
-            if rooms == 0:
+                type_ = 'apartmentRent'
+            if type_ is None:
                 continue
+
             price = price.replace(" €/mp",'')
-            pair = {area: {'price':price, 'scope':scope ,'rooms':rooms}}
-            prices.append(pair)
-    prices = json.dumps(prices)
-    return prices
+            pair = {area: {'price':price}}
 
+            # build list
+            if type_ == 'studioSale':
+                studioSale.append(pair)
+            if type_ == 'apartmentSale':
+                apartmentSale.append(pair)
+            if type_ == 'studioRent':
+                studioRent.append(pair)
+            if type_ == 'apartmentRent':
+                apartmentRent.append(pair)
 
+            obj['studioSale'] = studioSale
+            obj['apartmentSale'] = apartmentSale
+            obj['studioRent'] = studioRent
+            obj['apartmentRent'] = apartmentRent
 
+    return obj
 
