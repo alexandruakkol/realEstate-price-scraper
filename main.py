@@ -10,6 +10,9 @@ apartmentSale = {'apartmentSale': all_data['apartmentSale']}
 studioRent = {'studioRent': all_data['studioRent']}
 studioSale = {'studioSale': all_data['studioSale']}
 
+@app.route('/')
+def homepage():
+    return 'try /apartments-for-rent, /apartments-for-sale, /studios-for-rent, or /studios-for-sale'
 
 @app.route('/apartments-for-rent')
 def apartmentRentPage():
