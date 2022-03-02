@@ -1,7 +1,10 @@
 from scraper import scrape
 from flask import Flask
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 all_data = scrape()
 
 apartmentRent = {'apartmentRent': all_data['apartmentRent']}
@@ -10,6 +13,7 @@ studioRent = {'studioRent': all_data['studioRent']}
 studioSale = {'studioSale': all_data['studioSale']}
 
 @app.route('/')
+@cross_origin()
 def homepage():
     return ("""
     <style>
@@ -35,18 +39,22 @@ def homepage():
     </footer>
     """)
 @app.route('/apartments-for-rent')
+@cross_origin()
 def apartmentRentPage():
     return apartmentRent
 
 @app.route('/apartments-for-sale')
+@cross_origin()
 def apartmentSalePage():
     return apartmentSale
 
 @app.route('/studios-for-rent')
+@cross_origin()
 def studioRentPage():
     return studioRent
 
 @app.route('/studios-for-sale')
+@cross_origin()
 def studioSalePage():
     return studioSale
 
