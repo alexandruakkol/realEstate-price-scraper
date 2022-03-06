@@ -7,10 +7,10 @@ cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 all_data = scrape()
 
-apartmentRent = {'apartmentRent': all_data['apartmentRent']}
-apartmentSale = {'apartmentSale': all_data['apartmentSale']}
-studioRent = {'studioRent': all_data['studioRent']}
-studioSale = {'studioSale': all_data['studioSale']}
+apartmentRent = {'data': all_data['apartmentRent']}
+apartmentSale = {'data': all_data['apartmentSale']}
+studioRent = {'data': all_data['studioRent']}
+studioSale = {'data': all_data['studioSale']}
 
 @app.route('/')
 @cross_origin()
